@@ -16,6 +16,9 @@ func main() {
 		var versions []*semver.Version
 		buf := bufio.NewScanner(os.Stdin)
 		for buf.Scan() {
+			if buf.Text() == "" {
+				continue
+			}
 			v, err := semver.NewVersion(buf.Text())
 			if err == nil {
 				versions = append(versions, v)
