@@ -12,7 +12,8 @@ func main() {
 	if len(os.Args) < 1 {
 		panic(fmt.Errorf("argument invalid"))
 	}
-	if os.Args[1] == "" {
+	switch os.Args[1] {
+	case "":
 		var versions []*semver.Version
 		buf := bufio.NewScanner(os.Stdin)
 		for buf.Scan() {
@@ -28,8 +29,8 @@ func main() {
 		for _, v := range versions {
 			fmt.Println(v.String())
 		}
-	}
-	if os.Args[1] == "latest" {
+		break
+	case "latest":
 		var versions []*semver.Version
 		buf := bufio.NewScanner(os.Stdin)
 		for buf.Scan() {
@@ -40,7 +41,8 @@ func main() {
 		}
 		sort.Sort(semver.Collection(versions))
 		fmt.Print(versions[len(versions)-1].String())
-	} else {
+		break
+	default:
 		target, err := semver.NewConstraint(os.Args[1])
 		if err != nil {
 			panic(err.Error())
@@ -57,7 +59,7 @@ func main() {
 		for _, v := range versions {
 			fmt.Println(v.String())
 		}
+		break
 	}
-
 	os.Exit(0)
 }
